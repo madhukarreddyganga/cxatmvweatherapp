@@ -84,7 +84,7 @@ function CitySearch(props: ICitySearchProps) {
             </button>
         </div>
       )}
-      <p>{result.message}</p>
+      <p>{result.message}&nbsp;</p>
     </div>
   );
 }

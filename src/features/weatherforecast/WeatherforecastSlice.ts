@@ -53,6 +53,7 @@ const addCityReducer = (state: IWeatherForecastState, action: PayloadAction<{ ci
 
 const removeCityReducer = (state: IWeatherForecastState, action: PayloadAction<{ cityId: number }>) => {
     const updatedCityList = state.cityList.filter(city => city.id !== action.payload.cityId);
+    localStorage.setItem(CITY_LIST_LOCAL_SK, JSON.stringify(updatedCityList));
     delete state.cityWeatherData[action.payload.cityId];
     state.cityList = updatedCityList;
 }
