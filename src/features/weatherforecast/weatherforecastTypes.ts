@@ -5,3 +5,7 @@ export interface ICity {
     lat: number;
     lon: number;
 }
+
+export interface IWeatherData {
+
+}

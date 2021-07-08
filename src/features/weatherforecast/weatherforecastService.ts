@@ -1,5 +1,4 @@
-import { ICity } from "common/types.d";
-
+import { ICity } from "features/weatherforecast/weatherforecastTypes";
 
 const API_KEY = "69d8a2ec66988d75784132afe4ca3f1a";
 /**

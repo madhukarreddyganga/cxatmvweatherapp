@@ -1,6 +1,8 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import SearchInput from "./SearchInput";
 import { ICity } from "features/weatherforecast/weatherforecastTypes";
+import { addCity } from "features/weatherforecast/WeatherforecastSlice";
 import { lookupCity } from "features/weatherforecast/weatherforecastService";
 import styles from "./CitySearch.module.css";
 
@@ -19,6 +21,7 @@ function CitySearch(props: ICitySearchProps) {
     state: 'initial',
     searchQuery: ""
   });
+  const dispatch = useDispatch();
 
   const searchCity = async (searchQuery: string) => {
     if (searchQuery.length === 0) {
@@ -55,6 +58,9 @@ function CitySearch(props: ICitySearchProps) {
   };
 
   const onSelectCity = () => {
+    if(result.city){
+      dispatch(addCity({city: result.city}));
+    }
     setResult({
       state: 'initial',
       searchQuery: ""
