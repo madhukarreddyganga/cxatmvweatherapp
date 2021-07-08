@@ -4,12 +4,11 @@
 .deleteIcon {
     font-size: 1.6rem;
     position: absolute;
-    top: -10px;
-    right: -10px;
+    top: 0px;
+    right: 0px;
     height: 30px;
     width: 30px;
-    border-radius: 50%;
-    background: white;
+    background: #CACACA;
     color: red;
     display: none;
     align-items: center;
@@ -31,12 +30,14 @@
     min-height: 16rem;
     margin-bottom: 2rem;
 }
-
 .currentWeather{
     flex: 1;
     padding: 1rem;
     display: flex;
     flex-direction: column;
+}
+.currentWeatherTitle, .forecastData{
+    display: flex;
 }
 .cardTitle{
     font-weight: 400;
@@ -47,9 +48,6 @@
     font-weight: 400;
     font-size: 1.2rem;
 }
-.currentWeatherTitle, .forecastData{
-    display: flex;
-}
 .weatherSummary{
     flex: 1;
     display: flex;
@@ -59,7 +57,7 @@
     min-height: 150px;
 }
 .temperature{
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 400;
     margin-bottom: 1rem;
 }
@@ -101,5 +99,12 @@
     }
     .deleteIcon {
       font-size: 1.4rem;
+    }
+    .forecast{
+        padding: 0.5rem;
+    }
+    .currentWeatherTitle{
+        padding-top: 1rem;
+        align-items: center;
     }
   }

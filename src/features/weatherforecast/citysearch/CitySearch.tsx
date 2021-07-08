@@ -1,27 +1,23 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import SearchInput from "./SearchInput";
-import { ICity } from "features/weatherforecast/weatherforecastTypes";
+import { useAppDispatch } from "app/hooks";
+import { ICity, TResourceState } from "features/weatherforecast/weatherforecastTypes";
 import { addCity } from "features/weatherforecast/WeatherforecastSlice";
 import { lookupCity } from "features/weatherforecast/weatherforecastService";
 import styles from "./CitySearch.module.css";
-
-interface ICitySearchProps{
-  
-}
 interface ICitySearchResult {
-  state: 'initial' | 'loading' | 'data_available' | 'error',
+  state: TResourceState,
   city?: ICity,
   searchQuery: string;
   message?: string;
 }
 
-function CitySearch(props: ICitySearchProps) {
+function CitySearch() {
   const [result, setResult] = React.useState<ICitySearchResult>({
     state: 'initial',
     searchQuery: ""
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const searchCity = async (searchQuery: string) => {
     if (searchQuery.length === 0) {

@@ -1,10 +1,11 @@
-import { ICity, IWeatherData } from "features/weatherforecast/weatherforecastTypes";
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ICity, ICityWeatherData } from "features/weatherforecast/weatherforecastTypes";
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchCityWeatherData } from "features/weatherforecast/weatherforecastService";
 import { RootState } from 'app/store';
 
 export interface IWeatherForecastState {
     cityList: ICity[],
-    cityWeatherData: { [key: string]: IWeatherData }
+    cityWeatherData: { [key: string]: ICityWeatherData }
 }
 
 export const CITY_LIST_LOCAL_SK = "CITY_LIST_LOCAL_SK";
@@ -32,6 +33,13 @@ export const getInitialState = (): IWeatherForecastState => ({
     cityList: getCityListFromLocalStorage(),
     cityWeatherData: {},
 });
+
+export const fetchCityWeatherDataThunk = createAsyncThunk(
+    'fetchCityWeatherData',
+    async (city: ICity) => {
+        return await fetchCityWeatherData(city);
+    }
+);
 
 const addCityReducer = (state: IWeatherForecastState, action: PayloadAction<{ city: ICity }>) => {
     //remove the city if it is already added.
@@ -64,7 +72,16 @@ export const weatherforecastSlice = createSlice({
     reducers: {
         addCity: addCityReducer,
         removeCity: removeCityReducer
-    }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchCityWeatherDataThunk.pending, (state, action) => {
+                state.cityWeatherData[action.meta.arg.id] = { state: 'loading' }
+            })
+            .addCase(fetchCityWeatherDataThunk.fulfilled, (state, action) => {
+                state.cityWeatherData[action.meta.arg.id] = action.payload;
+            })
+    },
 });
 
 export const { addCity, removeCity } = weatherforecastSlice.actions;

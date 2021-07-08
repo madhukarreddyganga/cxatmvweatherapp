@@ -1,4 +1,5 @@
-import { ICity } from "features/weatherforecast/weatherforecastTypes";
+import { ICity, ICityWeatherData, IWeatherData } from "features/weatherforecast/weatherforecastTypes";
+import { toDate, format } from 'date-fns';
 
 const API_KEY = "69d8a2ec66988d75784132afe4ca3f1a";
 /**
@@ -24,5 +25,33 @@ export async function lookupCity(cityQuery: string): Promise<ICity | undefined> 
     } catch (e) {
         console.error(e);
         return undefined;
+    }
+}
+function extractWeatherDataFromResponse(dailyData: any): IWeatherData {
+    return {
+        temp: dailyData?.temp?.day,
+        feelsLike: dailyData?.feels_like?.day,
+        humidity: dailyData?.humidity,
+        windSpeed: dailyData?.wind_speed,
+        weather: dailyData?.weather[0]?.description,
+        curDay: format(toDate(dailyData?.dt * 1000), 'iii LLL dd')
+    }
+}
+export async function fetchCityWeatherData(city: ICity): Promise<ICityWeatherData> {
+    try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${city.lat}&lon=${city.lon}&appid=${API_KEY}&exclude=minutely,hourly,alerts&units=metric`);
+        const { daily } = await response.json();
+        return {
+            state: 'data_available',
+            current: extractWeatherDataFromResponse(daily[0]),
+            foreCastOne: extractWeatherDataFromResponse(daily[1]),
+            foreCastTwo: extractWeatherDataFromResponse(daily[2]),
+            foreCastThree: extractWeatherDataFromResponse(daily[3])
+        }
+    } catch (e) {
+        console.error(e);
+        return {
+            state: 'error'
+        };
     }
 }
