@@ -1,0 +1,10 @@
+.weatherfcRoot{
+    max-width: 900px;
+    margin: 0 auto;
+    color: white;
+}
+.appTitle{
+    font-weight: 400;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
